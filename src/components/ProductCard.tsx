@@ -1,4 +1,5 @@
 import IProduct from "@/lib/typecode/IProduct";
+import Link from "next/link";
 import React, { FC } from "react";
 
 type PropsType = {
@@ -6,5 +7,5 @@ type PropsType = {
 };
 
 export const ProductCard: FC<PropsType> = ({ product }) => {
-  return <></>;
+  return <Link className="" href={`/product/${product.id}`}></Link>;
 };
