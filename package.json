@@ -1,15 +1,17 @@
 {
+  "type": "module",
   "name": "next-store",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node ./server.cjs",
     "lint": "next lint"
   },
   "prisma": {
-    "schema": "./schema.prisma"
+    "schema": "./schema.prisma",
+    "seed": "node ./seed.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.3",
