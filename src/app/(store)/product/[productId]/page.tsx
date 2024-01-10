@@ -44,11 +44,11 @@ export default async function ProductPage({
 
   return (
     <>
-      <h2 className="text-2xl my-3 font-bold hidden md:block">
+      <h2 className="text-2xl my-3 font-bold hidden md:block text-center">
         {product.name}
       </h2>
 
-      <div className="w-full md:flex md:gap-4">
+      <div className="w-full md:flex md:gap-4 pb-[72px] md:container">
         <div className="md:w-[70%]">
           <Slider>
             {product.links.split(",").map((link, i) => (
@@ -72,7 +72,7 @@ export default async function ProductPage({
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full flex justify-center p-3 bg-[hsl(var(--primary-foreground))] md:relative md:mt-3">
+      <div className="fixed bottom-0 w-full flex justify-center p-3 bg-[hsl(var(--primary-foreground))] md:relative md:mt-3 md:container">
         <div className="flex justify-between gap-2 items-center w-full">
           <p>Купить <br/>{product.name}</p>
 

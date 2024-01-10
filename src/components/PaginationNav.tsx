@@ -31,10 +31,10 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
   };
 
   return (
-    <Pagination>
+    <Pagination className="mb-5">
       <PaginationContent>
         <PaginationPrevious
-          onClick={() => handleParams(Number(page) > 1 ? Number(page) - 1 : 0)}
+          onClick={() => handleParams(Number(page) > 0 ? Number(page) - 1 : 0)}
         />
 
         {Array.from({ length: Math.ceil(productsCount / 10) }).map((_, i) => (
@@ -43,7 +43,7 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
             isActive={i == Number(page)}
             onClick={() => handleParams(i)}
           >
-            {i}
+            {i + 1}
           </PaginationLink>
         ))}
 

@@ -19,7 +19,7 @@ export const CategorySection: FC<PropsType> = ({
         </video>
       </div>
 
-      <div className="w-full h-full z-10 bg-black/80 md:flex md:justify-center md:items-center">
+      <div className="w-full z-10 bg-black/70 md:flex md:justify-center md:items-center h-[calc(100vh-89px)]">
         <div className="flex flex-col items-center md:container">
           <h3 className="uppercase w-full text-2xl font-bold text-center my-3">
             Хиты в категории <br /> {title}

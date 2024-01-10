@@ -15,7 +15,7 @@ type SearchParamsType = {
 type FilterType = {
   AND: Array<{
     [key: string]: {
-      [key: string]: any;
+      [key: string]: string | number;
     };
   }>;
 };
@@ -44,7 +44,7 @@ export default async function CatalogPage({
       },
       {
         price: {
-          lt: Number(searchParams.finalCost),
+          lte: Number(searchParams.finalCost),
         },
       },
     ],
@@ -61,7 +61,7 @@ export default async function CatalogPage({
   const products = await prisma.product.findMany({
     take: 10,
     skip: Number(searchParams.page) * 10,
-    where,
+    where
   });
 
   return (

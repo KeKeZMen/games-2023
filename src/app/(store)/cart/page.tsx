@@ -29,9 +29,9 @@ export default async function CartPage() {
 
   return (
     <>
-      <h2 className="text-2xl my-3">Ваша корзина</h2>
+      <h2 className="text-2xl my-3 text-center">Ваша корзина</h2>
 
-      <div className="bg-[hsl(var(--primary-foreground))] mb-3 flex flex-col">
+      <div className="bg-[hsl(var(--primary-foreground))] mb-3 flex flex-col md:container">
         {cartedProducts.length > 0 ? (
           cartedProducts.map((product) => (
             <CartedProduct
@@ -46,7 +46,7 @@ export default async function CartPage() {
       </div>
 
       {cartedProducts.length > 0 && (
-        <div className="bg-[hsl(var(--primary-foreground))] p-3 flex justify-between items-center">
+        <div className="bg-[hsl(var(--primary-foreground))] p-3 flex justify-between items-center md:container">
           <p>
             Общая стоимость:{" "}
             {cartedProducts.reduce((acc, cur) => (acc += cur.price), 0)}$

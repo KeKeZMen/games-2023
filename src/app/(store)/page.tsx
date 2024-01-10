@@ -24,14 +24,14 @@ export default async function MainPage() {
       name: true,
       id: true,
       products: {
-        take: 10,
+        take: 7,
       },
     },
   });
 
   return (
     <>
-      <section className="md:flex md:justify-center md:items-center md:h-[calc(100vh-98px)]">
+      <section className="md:flex md:justify-center md:items-center md:min-h-[calc(100vh-98px)] mb-3">
         <div className="md:container">
           <Slider>
             {bannerProducts.map((product) => (
@@ -40,7 +40,9 @@ export default async function MainPage() {
           </Slider>
 
           <div className="flex flex-col gap-3 mt-3">
-            <h2 className="text-center text-2xl">Хиты</h2>
+            <h2 className="uppercase w-full text-2xl font-bold text-center my-3">
+              Хиты
+            </h2>
             {hotProducts.map((product) => (
               <ProductRow product={product} key={product.id} />
             ))}

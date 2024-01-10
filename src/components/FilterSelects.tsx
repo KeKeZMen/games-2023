@@ -66,7 +66,7 @@ const Selects: FC<PropsType> = ({ onSelect }) => {
   return (
     <>
       {!isLoadingCategories && (
-        <Select onValueChange={(val) => setSelectedCategory(val)}>
+        <Select onValueChange={(val) => setSelectedCategory(val)} defaultValue="all">
           <SelectTrigger>
             <SelectValue placeholder="Категория" />
           </SelectTrigger>

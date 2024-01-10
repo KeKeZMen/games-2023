@@ -13,7 +13,7 @@ export const ProductRow: FC<PropsType> = ({ product }) => {
       className="flex justify-between items-center bg-[hsl(var(--primary-foreground))] w-full"
     >
       <div className="flex gap-2 items-center w-full">
-        <img src={product.links.split(",")[0]} className="h-12" />
+        <img src={product.links.split(",")[0]} className="h-20" />
         <h2 className="text-xs md:text-base">{product.name}</h2>
       </div>
 
