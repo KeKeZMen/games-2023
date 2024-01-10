@@ -28,7 +28,7 @@ export const CreateProductButton = () => {
     });
 
     if (!res.ok) toast.error((await res.json()).message);
-    else toast.success((await res.json()).message);
+    if (res.ok) toast.success((await res.json()).message);
   };
 
   return (

@@ -7,7 +7,6 @@ import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  try {
     const session = await getServerSession(authOptions);
 
     if (session?.user?.id !== "clpl6gb7e000008l45rq9dsxy") {
@@ -60,7 +59,4 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "Продукт создан!" });
-  } catch (error) {
-    return NextResponse.json({ message: error });
-  }
 }
