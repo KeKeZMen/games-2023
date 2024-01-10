@@ -20,10 +20,11 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleParams = () => {
+  const handleParams = (page: number) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
+    current.set("page", String(page))
     let search = current.toString();
-    const query = search ? `${search}` : "";
+    const query = search ? `?${search}` : "";
 
     router.push(`${pathname}${query}`);
     router.refresh();
@@ -33,28 +34,27 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
     <Pagination>
       <PaginationContent>
         <PaginationPrevious
-          href={`/catalog?page=${Number(page) > 1 ? `${Number(page) - 1}` : 1}`}
-          onClick={handleParams}
+          onClick={() => handleParams(Number(page) > 1 ? Number(page) - 1 : 0)}
         />
 
         {Array.from({ length: Math.ceil(productsCount / 10) }).map((_, i) => (
           <PaginationLink
-            href={`/catalog?page=${i + 1}`}
             key={i}
-            isActive={i + 1 == Number(page)}
-            onClick={handleParams}
+            isActive={i == Number(page)}
+            onClick={() => handleParams(i)}
           >
-            {i + 1}
+            {i}
           </PaginationLink>
         ))}
 
         <PaginationNext
-          href={`/catalog?page=${
-            Number(page) < Math.ceil(productsCount / 10)
-              ? `${Number(page) + 1}`
-              : Math.ceil(productsCount / 10)
-          }`}
-          onClick={handleParams}
+          onClick={() =>
+            handleParams(
+              Number(page) < Math.ceil(productsCount / 10)
+                ? Number(page) + 1
+                : Math.ceil(productsCount / 10)
+            )
+          }
         />
       </PaginationContent>
     </Pagination>

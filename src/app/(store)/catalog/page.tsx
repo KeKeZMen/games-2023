@@ -9,7 +9,15 @@ type SearchParamsType = {
   page: string;
   startCost: string;
   finalCost: string;
-  category: string;
+  categoryId: string;
+};
+
+type FilterType = {
+  AND: Array<{
+    [key: string]: {
+      [key: string]: any;
+    };
+  }>;
 };
 
 export const metadata: Metadata = {
@@ -21,36 +29,43 @@ export default async function CatalogPage({
 }: {
   searchParams: SearchParamsType;
 }) {
-  if (!searchParams.page)
-    redirect("/catalog?page=1");
+  if (Object.values(searchParams).length < 4) {
+    redirect("/catalog?page=0&categoryId=all&startCost=0&finalCost=1000");
+  }
 
   const productsCount = await prisma.product.count();
 
+  const where: FilterType = {
+    AND: [
+      {
+        price: {
+          gt: Number(searchParams.startCost),
+        },
+      },
+      {
+        price: {
+          lt: Number(searchParams.finalCost),
+        },
+      },
+    ],
+  };
+
+  if (searchParams.categoryId !== "all") {
+    where.AND.push({
+      categoryId: {
+        equals: Number(searchParams.categoryId),
+      },
+    });
+  }
+
   const products = await prisma.product.findMany({
     take: 10,
-    skip: (Number(searchParams.page) - 1) * 10,
-    where: {
-      AND: [
-        // { 
-        //   categoryId: {
-
-        //   }  
-        // },
-        {
-          AND: [
-            {
-              price: {
-                gt: Number(searchParams.startCost) || 0,
-              },
-            },
-          ],
-        },
-      ],
-    },
+    skip: Number(searchParams.page) * 10,
+    where,
   });
 
   return (
-    <>
+    <section className="md:container">
       <div className="md:flex md:flex-row-reverse md:items-start mb-3">
         <div className="flex justify-between items-center mt-3 px-3">
           <h2 className="text-2xl font-bold md:hidden">Каталог</h2>
@@ -65,6 +80,6 @@ export default async function CatalogPage({
           <PaginationNav productsCount={productsCount} />
         </div>
       </div>
-    </>
+    </section>
   );
 }

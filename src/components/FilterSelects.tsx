@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/ui/select";
-import { useState } from "react";
+import { FC, useState } from "react";
 import useSWR, { Fetcher } from "swr";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/lib/ui/input";
@@ -24,7 +24,11 @@ import { Input } from "@/lib/ui/input";
 const categoriesFetcher: Fetcher<Array<Category>, string> = (url) =>
   fetch(url).then((res) => res.json());
 
-const Selects = () => {
+type PropsType = {
+  onSelect?: () => void;
+};
+
+const Selects: FC<PropsType> = ({ onSelect }) => {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
@@ -41,18 +45,20 @@ const Selects = () => {
   const handleQuery = () => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
 
-    current.set("category", selectedCategory);
+    current.set("categoryId", selectedCategory);
     current.set("startCost", startCost);
     current.set("finalCost", finalCost);
 
     let search = current.toString();
     const query = search ? `?${search}` : "";
 
+    onSelect?.();
     router.push(`${pathName}${query}`);
     router.refresh();
   };
 
   const handleResetQuery = () => {
+    onSelect?.();
     router.push(`${pathName}`);
     router.refresh();
   };
@@ -65,6 +71,9 @@ const Selects = () => {
             <SelectValue placeholder="Категория" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="all" className="cursor-pointer">
+              Все категории
+            </SelectItem>
             {categories?.map((category) => (
               <SelectItem
                 value={String(category.id)}
@@ -123,7 +132,7 @@ export const FilterSelects = () => {
             <DialogHeader>
               <DialogTitle>Фильтр</DialogTitle>
             </DialogHeader>
-            <Selects />
+            <Selects onSelect={handleModal} />
           </DialogContent>
         </Dialog>
       </>
