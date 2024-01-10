@@ -48,7 +48,7 @@ export default async function ProductPage({
         {product.name}
       </h2>
 
-      <div className="w-full md:flex md:gap-4 pb-[72px] md:container">
+      <div className="w-full md:flex md:gap-4 pb-[100px] md:container">
         <div className="md:w-[70%]">
           <Slider>
             {product.links.split(",").map((link, i) => (
