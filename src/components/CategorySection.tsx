@@ -13,7 +13,7 @@ export const CategorySection: FC<PropsType> = ({
 }) => {
   return (
     <section className="relative md:min-h-[calc(100vh-89px)]">
-      <div className="h-full w-full absolute -z-10 top-0">
+      <div className="h-[calc(100vh-89px)] w-full absolute -z-10 top-0">
         <video autoPlay loop muted className="h-full w-full object-cover">
           <source src={videoLink.toLowerCase()} type="video/mp4" />
         </video>

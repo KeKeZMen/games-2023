@@ -61,7 +61,15 @@ export default async function CatalogPage({
   const products = await prisma.product.findMany({
     take: 10,
     skip: Number(searchParams.page) * 10,
-    where
+    select: {
+      categoryId: true,
+      description: true,
+      id: true,
+      images: true,
+      name: true,
+      price: true,
+    },
+    where,
   });
 
   return (

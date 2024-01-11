@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
 import { Button } from "@/lib/ui/button";
 import { Input } from "@/lib/ui/input";
-import { FormField, FormItem, FormLabel, FormControl, Form } from "@/lib/ui/form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  Form,
+} from "@/lib/ui/form";
 import {
   Select,
   SelectTrigger,
@@ -23,7 +29,8 @@ type PropsType = {
   submitTitle: string;
   onSubmitAction: (
     data: any,
-    files: FileList | null | undefined
+    preview: File | undefined | null,
+    images: FileList | undefined | null
   ) => Promise<any>;
   onClose?: () => void;
 };
@@ -38,7 +45,8 @@ export const ProductForm: FC<PropsType> = ({
   onClose,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [files, setFiles] = useState<FileList | null>();
+  const [preview, setPreview] = useState<File>();
+  const [images, setImages] = useState<FileList>();
   const { data: categories, isLoading: isLoadingCategories } = useSWR(
     "/api/category",
     categoriesFetcher
@@ -57,7 +65,7 @@ export const ProductForm: FC<PropsType> = ({
     setIsLoading(true);
 
     try {
-      await onSubmitAction(data, files);
+      await onSubmitAction(data, preview, images);
 
       setIsLoading(false);
 
@@ -66,6 +74,21 @@ export const ProductForm: FC<PropsType> = ({
     } catch (error) {
       setIsLoading(false);
       toast.error(`${error}`);
+    }
+  };
+
+  const handleMaxImages = (
+    images: FileList | null | undefined,
+    maxCount: number
+  ) => {
+    if (!images) return toast.error("Вы не выбрали картинки");    
+
+    if (images.length > maxCount) {
+      return toast.error(`Максимум ${maxCount} картинок`);
+    } else if (images.length == 1) {
+      setPreview(images[0]);
+    } else {
+      setImages(images);
     }
   };
 
@@ -147,6 +170,20 @@ export const ProductForm: FC<PropsType> = ({
         />
 
         <FormItem className="w-full">
+          <FormLabel>Превью</FormLabel>
+          <FormControl>
+            <Input
+              type="file"
+              multiple
+              accept=".jpeg, .png, .jpg"
+              disabled={isLoading}
+              required
+              onChange={(e) => handleMaxImages(e.target.files, 1)}
+            />
+          </FormControl>
+        </FormItem>
+
+        <FormItem className="w-full">
           <FormLabel>Изображения</FormLabel>
           <FormControl>
             <Input
@@ -155,7 +192,7 @@ export const ProductForm: FC<PropsType> = ({
               accept=".jpeg, .png, .jpg"
               disabled={isLoading}
               required
-              onChange={(e) => setFiles(e.target.files)}
+              onChange={(e) => handleMaxImages(e.target.files, 6)}
             />
           </FormControl>
         </FormItem>

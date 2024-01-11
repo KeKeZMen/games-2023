@@ -87,3 +87,7 @@ body {
 .swiper-button-next{
   color: white !important;
 }
+
+body::-webkit-scrollbar{
+  display: none;
+}

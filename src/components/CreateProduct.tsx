@@ -8,7 +8,8 @@ import { ProductForm } from "./ProductForm";
 export const CreateProductButton = () => {
   const onSbumitAction = async (
     data: any,
-    files: FileList | null | undefined
+    preview: File | undefined | null,
+    images: FileList | undefined | null
   ) => {
     const formData = new FormData();
 
@@ -16,9 +17,13 @@ export const CreateProductButton = () => {
       formData.append(key, data[key]);
     }
 
-    if (files) {
-      Array.from(files).forEach((file) => {
-        formData.append("files", file);
+    if (preview) {
+      formData.append("preview", preview);
+    }
+
+    if (images) {
+      Array.from(images).forEach((image) => {
+        formData.append("image", image);
       });
     }
 

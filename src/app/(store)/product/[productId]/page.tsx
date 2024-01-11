@@ -15,6 +15,14 @@ export default async function ProductPage({
     where: {
       id: Number(params.productId),
     },
+    select: {
+      categoryId: true,
+      description: true,
+      id: true,
+      images: true,
+      name: true,
+      price: true,
+    },
   });
 
   if (!product) return redirect("/");
@@ -51,15 +59,17 @@ export default async function ProductPage({
       <div className="w-full md:flex md:gap-4 pb-[100px] md:container">
         <div className="md:w-[70%]">
           <Slider>
-            {product.links.split(",").map((link, i) => (
-              <img src={link} key={i} />
-            ))}
+            {product.images
+              .filter((i) => !i.isPreview)
+              .map((image, i) => (
+                <img src={image.link} key={i} />
+              ))}
           </Slider>
         </div>
 
         <div className="md:w-[30%]">
           <img
-            src={product.links.split(",")[0]}
+            src={product.images.find((i) => i.isPreview)?.link}
             alt=""
             className="hidden md:block mb-3"
           />
@@ -74,7 +84,10 @@ export default async function ProductPage({
 
       <div className="fixed bottom-0 w-full flex justify-center p-3 bg-[hsl(var(--primary-foreground))] md:relative md:mt-3 md:container">
         <div className="flex justify-between gap-2 items-center w-full">
-          <p>Купить <br/>{product.name}</p>
+          <p>
+            Купить <br />
+            {product.name}
+          </p>
 
           <div className="flex justify-between rounded-md bg-black">
             <p className="border-r-2 p-1">{product.price}$</p>

@@ -23,13 +23,24 @@ model Product {
   name        String
   description String @db.Text
   price       Int
-  links       String @db.Text
   categoryId  Int
 
-  category  Category    @relation(fields: [categoryId], references: [id])
+  category  Category       @relation(fields: [categoryId], references: [id])
   OrderItem OrderItem[]
+  images    ProductImage[]
 
   @@map("products")
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  link      String
+  isPreview Boolean @default(false)
+
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("images")
 }
 
 model Category {

@@ -7,17 +7,33 @@ import { CategorySection } from "@/components/CategorySection";
 export default async function MainPage() {
   const bannerProducts = await prisma.product.findMany({
     take: 3,
+    select: {
+      categoryId: true,
+      description: true,
+      id: true,
+      images: true,
+      name: true,
+      price: true,
+    },
   });
 
   const hotProducts = await prisma.product.findMany({
     take: 4,
     skip: 3,
+    select: {
+      categoryId: true,
+      description: true,
+      id: true,
+      images: true,
+      name: true,
+      price: true,
+    },
   });
 
   const categories = await prisma.category.findMany({
     where: {
       name: {
-        in: ["Шутер", "Стратегия", "RPG"],
+        in: ["Экшн", "Стратегия", "RPG"],
       },
     },
     select: {
@@ -25,6 +41,14 @@ export default async function MainPage() {
       id: true,
       products: {
         take: 7,
+        select: {
+          categoryId: true,
+          description: true,
+          id: true,
+          images: true,
+          name: true,
+          price: true,
+        },
       },
     },
   });

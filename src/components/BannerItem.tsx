@@ -1,9 +1,9 @@
-import IProduct from "@/lib/typecode/IProduct";
 import Link from "next/link";
 import { FC } from "react";
+import { IProductWithImages } from "@/lib/Interfaces";
 
 type PropsType = {
-  product: IProduct;
+  product: IProductWithImages;
 };
 
 export const BannerItem: FC<PropsType> = ({ product }) => {
@@ -13,7 +13,8 @@ export const BannerItem: FC<PropsType> = ({ product }) => {
       href={`/product/${product.id}`}
     >
       <img
-        src={product.links.split(",")[0]}
+        src={product.images.find((i) => i.isPreview)?.link}
+        alt=""
         className="w-full relative md:w-[70%]"
       />
 
@@ -21,9 +22,11 @@ export const BannerItem: FC<PropsType> = ({ product }) => {
         <h2 className="text-2xl">{product.name}</h2>
 
         <div className="hidden md:grid grid-cols-2 grid-rows-3 gap-1">
-          {product.links.split(",").map((link, i) => (
-            <img src={link} alt="" key={i}/>
-          ))}
+          {product.images
+            .filter((img) => !img.isPreview)
+            .map((img) => (
+              <img src={img.link} key={img.id} />
+            ))}
         </div>
 
         <p className="justify-self-end">{product.price}$</p>

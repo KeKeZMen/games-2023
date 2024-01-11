@@ -1,9 +1,9 @@
-import IProduct from "@/lib/typecode/IProduct";
 import Link from "next/link";
 import { FC } from "react";
+import type { Product } from "@prisma/client";
 
 type PropsType = {
-  product: IProduct;
+  product: Product;
   RemoveFromCart: JSX.Element;
 };
 
