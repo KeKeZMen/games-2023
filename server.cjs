@@ -1,14 +1,22 @@
 const { createServer } = require("http");
 const next = require("next");
 const { parse } = require("url");
+const { readFile } = require("fs/promises");
+const { resolve } = require("path");
 
 const port = 3000;
-const hostname = "kekez.ru";
+const hostname = "localhost";
 const app = next({ hostname, port });
 const handle = app.getRequestHandler();
+
 app.prepare().then(() => {
   createServer(async (req, res) => {
     try {
+      if (req.url.includes("/games/")) {
+        const file = await readFile(resolve(`./public/${req.url}`));
+        const fileBuffer = Buffer.from(file.buffer)
+        res.end(fileBuffer);
+      }
       const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     } catch (err) {
