@@ -7,10 +7,18 @@ import { Dialog, DialogTrigger, DialogContent } from "@/lib/ui/dialog";
 import { CategoryForm } from "./CategoryForm";
 
 export const CreateCategoryButton = () => {
-  const onSubmitAction = async (data: any) => {
+  const onSubmitAction = async (data: any, video: FileList | null | undefined) => {
+    const formData = new FormData()
+
+    formData.append("name", data.name)
+
+    if(video) {
+      formData.append("video", video[0])
+    }
+
     const res = await fetch("/api/category", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
     });
 
     if (!res.ok) toast.error((await res.json()).message);

@@ -17,6 +17,11 @@ app.prepare().then(() => {
         const fileBuffer = Buffer.from(file.buffer)
         res.end(fileBuffer);
       }
+      if(req.url.includes("/videos/")) {
+        const file = await readFile(resolve(`./public/${decodeURIComponent(req.url)}`));
+        const fileBuffer = Buffer.from(file.buffer)
+        res.end(fileBuffer);
+      }
       const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     } catch (err) {

@@ -31,16 +31,11 @@ export default async function MainPage() {
   });
 
   const categories = await prisma.category.findMany({
-    where: {
-      name: {
-        in: ["Экшн", "Стратегия", "RPG"],
-      },
-    },
     select: {
       name: true,
       id: true,
       products: {
-        take: 7,
+        take: 5,
         select: {
           categoryId: true,
           description: true,
@@ -78,7 +73,7 @@ export default async function MainPage() {
         <CategorySection
           key={i}
           title={category.name}
-          videoLink={`/${category.name}.mp4`}
+          videoLink={`/videos/${category.name}.mp4`}
         >
           {category.products.map((product) => (
             <ProductRow product={product} key={product.id} />

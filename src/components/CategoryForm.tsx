@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 type PropsType = {
   formTitle: string;
   submitTitle: string;
-  onSubmitAction: (data: any) => Promise<any>;
+  onSubmitAction: (data: any, video: FileList | null | undefined) => Promise<any>;
   onClose?: () => void;
 };
 
@@ -35,12 +35,14 @@ export const CategoryForm: FC<PropsType> = ({
     },
   });
 
+  const [video, setVideo] = useState<FileList | null>();
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(false);
 
     try {
-      await onSubmitAction(data);
-
+      await onSubmitAction(data, video);
+      
       setIsLoading(false);
       onClose?.();
       router.refresh();
@@ -75,6 +77,20 @@ export const CategoryForm: FC<PropsType> = ({
             </FormItem>
           )}
         />
+
+        <FormItem className="w-full">
+          <FormLabel>Видео</FormLabel>
+          <FormControl>
+            <Input
+              type="file"
+              accept=".mp4"
+              disabled={isLoading}
+              required
+              onChange={(e) => setVideo(e.target.files)}
+            />
+          </FormControl>
+        </FormItem>
+
         <Button type="submit">{submitTitle}</Button>
       </form>
     </Form>
