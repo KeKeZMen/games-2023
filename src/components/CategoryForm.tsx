@@ -38,7 +38,7 @@ export const CategoryForm: FC<PropsType> = ({
   const [video, setVideo] = useState<FileList | null>();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(false);
+    setIsLoading(true);
 
     try {
       await onSubmitAction(data, video);
