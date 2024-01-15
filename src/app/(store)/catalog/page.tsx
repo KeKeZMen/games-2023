@@ -33,8 +33,6 @@ export default async function CatalogPage({
     redirect("/catalog?page=0&categoryId=all&startCost=0&finalCost=1000");
   }
 
-  const productsCount = await prisma.product.count();
-
   const where: FilterType = {
     AND: [
       {
@@ -57,6 +55,10 @@ export default async function CatalogPage({
       },
     });
   }
+
+  const productsCount = await prisma.product.count({
+    where,
+  });
 
   const products = await prisma.product.findMany({
     take: 10,

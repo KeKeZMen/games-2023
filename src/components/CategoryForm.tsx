@@ -91,7 +91,7 @@ export const CategoryForm: FC<PropsType> = ({
           </FormControl>
         </FormItem>
 
-        <Button type="submit">{submitTitle}</Button>
+        <Button type="submit" disabled={isLoading}>{submitTitle}</Button>
       </form>
     </Form>
   );
