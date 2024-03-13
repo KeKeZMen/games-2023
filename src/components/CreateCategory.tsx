@@ -7,13 +7,16 @@ import { Dialog, DialogTrigger, DialogContent } from "@/lib/ui/dialog";
 import { CategoryForm } from "./CategoryForm";
 
 export const CreateCategoryButton = () => {
-  const onSubmitAction = async (data: any, video: FileList | null | undefined) => {
-    const formData = new FormData()
+  const onSubmitAction = async (
+    data: any,
+    video: FileList | null | undefined
+  ) => {
+    const formData = new FormData();
 
-    formData.append("name", data.name)
+    formData.append("name", data.name);
 
-    if(video) {
-      formData.append("video", video[0])
+    if (video) {
+      formData.append("video", video[0]);
     }
 
     const res = await fetch("/api/category", {
@@ -28,8 +31,10 @@ export const CreateCategoryButton = () => {
   return (
     <Dialog>
       <DialogTrigger className="text-[20px] gap-1 flex justify-between items-center">
-        <CiSquarePlus />
-        <p>Создать Категорию</p>
+        <div className="flex items-center">
+          <CiSquarePlus />
+          <p>Создать Категорию</p>
+        </div>
       </DialogTrigger>
 
       <DialogContent>

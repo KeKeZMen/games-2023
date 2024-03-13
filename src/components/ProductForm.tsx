@@ -23,10 +23,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useSWR, { Fetcher } from "swr";
 import { Textarea } from "@/lib/ui/textarea";
+import type { Product } from "@prisma/client"
 
 type PropsType = {
   formTitle: string;
   submitTitle: string;
+  product?: Product;
   onSubmitAction: (
     data: any,
     preview: File | undefined | null,
@@ -43,6 +45,7 @@ export const ProductForm: FC<PropsType> = ({
   submitTitle,
   onSubmitAction,
   onClose,
+  product
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<File>();
@@ -54,10 +57,10 @@ export const ProductForm: FC<PropsType> = ({
   const router = useRouter();
   const form = useForm({
     defaultValues: {
-      name: "",
-      categoryId: "",
-      description: "",
-      cost: 0,
+      name: product?.name ?? "",
+      categoryId: product?.categoryId ?? "",
+      description: product?.description ?? "",
+      cost: product?.price ?? 0,
     },
   });
 
@@ -127,7 +130,7 @@ export const ProductForm: FC<PropsType> = ({
                 <FormLabel>Категория</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={String(field.value)}
                 >
                   <FormControl>
                     <SelectTrigger>

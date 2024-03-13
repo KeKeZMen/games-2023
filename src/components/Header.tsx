@@ -11,7 +11,10 @@ import { ScrollProgress } from "./ScrollProgress";
 
 const links = [
   { link: "/", title: "Главная" },
-  { link: "/catalog", title: "Каталог" },
+  {
+    link: "/catalog?page=0&categoryId=all&startCost=0&finalCost=1000",
+    title: "Каталог",
+  },
 ];
 
 export default async function Header() {

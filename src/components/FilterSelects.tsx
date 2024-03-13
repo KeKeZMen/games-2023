@@ -24,11 +24,11 @@ import { Input } from "@/lib/ui/input";
 const categoriesFetcher: Fetcher<Array<Category>, string> = (url) =>
   fetch(url).then((res) => res.json());
 
-type PropsType = {
+type SelectsPropsType = {
   onSelect?: () => void;
 };
 
-const Selects: FC<PropsType> = ({ onSelect }) => {
+const Selects: FC<SelectsPropsType> = ({ onSelect }) => {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
@@ -45,7 +45,12 @@ const Selects: FC<PropsType> = ({ onSelect }) => {
   const handleQuery = () => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
 
-    current.set("categoryId", selectedCategory);
+    if (selectedCategory == "") {
+      current.set("categoryId", "all");
+    } else {
+      current.set("categoryId", selectedCategory);
+    }
+
     current.set("startCost", startCost);
     current.set("finalCost", finalCost);
 
@@ -66,7 +71,10 @@ const Selects: FC<PropsType> = ({ onSelect }) => {
   return (
     <>
       {!isLoadingCategories && (
-        <Select onValueChange={(val) => setSelectedCategory(val)} defaultValue="all">
+        <Select
+          onValueChange={(val) => setSelectedCategory(val)}
+          defaultValue="all"
+        >
           <SelectTrigger>
             <SelectValue placeholder="Категория" />
           </SelectTrigger>
@@ -110,7 +118,11 @@ const Selects: FC<PropsType> = ({ onSelect }) => {
   );
 };
 
-export const FilterSelects = () => {
+type PropsType = {
+  alwaysMobile?: boolean;
+};
+
+export const FilterSelects: FC<PropsType> = ({ alwaysMobile }) => {
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const { width } = useWindowSize();
 
@@ -120,7 +132,7 @@ export const FilterSelects = () => {
 
   if (!width) return <></>;
 
-  if (width <= 768) {
+  if (width <= 768 || alwaysMobile) {
     return (
       <>
         <Button variant="secondary" onClick={handleModal}>

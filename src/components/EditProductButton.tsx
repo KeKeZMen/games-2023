@@ -4,14 +4,23 @@ import { Dialog, DialogContent, DialogTrigger } from "@/lib/ui/dialog";
 import toast from "react-hot-toast";
 import { CiSquarePlus } from "react-icons/ci";
 import { ProductForm } from "./ProductForm";
+import type { Product } from "@prisma/client";
+import { FC } from "react";
+import { CiEdit } from "react-icons/ci";
 
-export const CreateProductButton = () => {
+type PropsType = {
+  product: Product;
+};
+
+export const EditProductButton: FC<PropsType> = ({ product }) => {
   const onSbumitAction = async (
     data: any,
     preview: File | undefined | null,
     images: FileList | undefined | null
   ) => {
     const formData = new FormData();
+
+    formData.append("id", String(product.id));
 
     for (const key in data) {
       formData.append(key, data[key]);
@@ -28,7 +37,7 @@ export const CreateProductButton = () => {
     }
 
     const res = await fetch("/api/product", {
-      method: "POST",
+      method: "PATCH",
       body: formData,
     });
 
@@ -38,18 +47,16 @@ export const CreateProductButton = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="text-[20px] gap-1 flex justify-between items-center">
-        <div className="flex justify-center gap-3 items-center">
-          <CiSquarePlus />
-          <p>Создать продукт</p>
-        </div>
+      <DialogTrigger className="text-2xl">
+        <CiEdit />
       </DialogTrigger>
 
       <DialogContent>
         <ProductForm
-          formTitle="Добавить игру"
-          submitTitle="Добавить"
+          formTitle="Редактировать игру"
+          submitTitle="Редактирвать"
           onSubmitAction={onSbumitAction}
+          product={product}
         />
       </DialogContent>
     </Dialog>
