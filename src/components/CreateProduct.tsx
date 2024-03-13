@@ -4,8 +4,12 @@ import { Dialog, DialogContent, DialogTrigger } from "@/lib/ui/dialog";
 import toast from "react-hot-toast";
 import { CiSquarePlus } from "react-icons/ci";
 import { ProductForm } from "./ProductForm";
+import { useState } from "react";
 
 export const CreateProductButton = () => {
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const handleModal = () => setIsOpenedModal((prev) => !prev);
+
   const onSbumitAction = async (
     data: any,
     preview: File | undefined | null,
@@ -37,7 +41,7 @@ export const CreateProductButton = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpenedModal} onOpenChange={handleModal}>
       <DialogTrigger className="text-[20px] gap-1 flex justify-between items-center">
         <div className="flex justify-center gap-3 items-center">
           <CiSquarePlus />
@@ -50,6 +54,7 @@ export const CreateProductButton = () => {
           formTitle="Добавить игру"
           submitTitle="Добавить"
           onSubmitAction={onSbumitAction}
+          onClose={handleModal}
         />
       </DialogContent>
     </Dialog>

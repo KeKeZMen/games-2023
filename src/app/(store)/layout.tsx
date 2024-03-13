@@ -10,7 +10,7 @@ export default async function StoreLayout({
   return (
     <Providers>
       <Header />
-      <main className="pt-[82px] md:pt-[120px] md:container">{children}</main>
+      <main className="pt-[82px] md:pt-[120px]">{children}</main>
     </Providers>
   );
 }

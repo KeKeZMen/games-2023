@@ -13,12 +13,17 @@ import { useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import type { Category } from "@prisma/client";
 
 type PropsType = {
   formTitle: string;
   submitTitle: string;
-  onSubmitAction: (data: any, video: FileList | null | undefined) => Promise<any>;
+  onSubmitAction: (
+    data: any,
+    video: FileList | null | undefined
+  ) => Promise<any>;
   onClose?: () => void;
+  category?: Category;
 };
 
 export const CategoryForm: FC<PropsType> = ({
@@ -26,12 +31,13 @@ export const CategoryForm: FC<PropsType> = ({
   submitTitle,
   onSubmitAction,
   onClose,
+  category,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm({
     defaultValues: {
-      name: "",
+      name: category?.name ?? "",
     },
   });
 
@@ -42,7 +48,7 @@ export const CategoryForm: FC<PropsType> = ({
 
     try {
       await onSubmitAction(data, video);
-      
+
       setIsLoading(false);
       onClose?.();
       router.refresh();
@@ -91,7 +97,9 @@ export const CategoryForm: FC<PropsType> = ({
           </FormControl>
         </FormItem>
 
-        <Button type="submit" disabled={isLoading}>{submitTitle}</Button>
+        <Button type="submit" disabled={isLoading}>
+          {submitTitle}
+        </Button>
       </form>
     </Form>
   );

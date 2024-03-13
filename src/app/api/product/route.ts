@@ -126,7 +126,7 @@ export async function DELETE(req: Request) {
     },
   });
 
-  return NextResponse.json({ message: "Игра успешно удалена" });
+  return NextResponse.json({ message: "Игра удалена!" });
 }
 
 export async function PATCH(req: Request) {
@@ -233,5 +233,5 @@ export async function PATCH(req: Request) {
     });
   }
 
-  return NextResponse.json({ message: "Продукт создан!" });
+  return NextResponse.json({ message: "Продукт отредактирован!" });
 }

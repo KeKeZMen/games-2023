@@ -2,10 +2,9 @@
 
 import { Dialog, DialogContent, DialogTrigger } from "@/lib/ui/dialog";
 import toast from "react-hot-toast";
-import { CiSquarePlus } from "react-icons/ci";
 import { ProductForm } from "./ProductForm";
 import type { Product } from "@prisma/client";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 
 type PropsType = {
@@ -13,6 +12,9 @@ type PropsType = {
 };
 
 export const EditProductButton: FC<PropsType> = ({ product }) => {
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const handleModal = () => setIsOpenedModal((prev) => !prev);
+
   const onSbumitAction = async (
     data: any,
     preview: File | undefined | null,
@@ -46,7 +48,7 @@ export const EditProductButton: FC<PropsType> = ({ product }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpenedModal} onOpenChange={handleModal}>
       <DialogTrigger className="text-2xl">
         <CiEdit />
       </DialogTrigger>
@@ -57,6 +59,7 @@ export const EditProductButton: FC<PropsType> = ({ product }) => {
           submitTitle="Редактирвать"
           onSubmitAction={onSbumitAction}
           product={product}
+          onClose={handleModal}
         />
       </DialogContent>
     </Dialog>

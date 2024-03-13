@@ -51,65 +51,94 @@ export async function PATCH(req: Request) {
 
   const body = await req.formData();
 
-  const id = body.get("id") as string
+  const id = body.get("id") as string;
   const name = body.get("name") as string;
   const video = body
     .getAll("video")
     .filter((f) => typeof f !== "string") as Array<File>;
 
+  const category = await prisma.category.findFirst({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  if (!category)
+    return NextResponse.json({ message: "Категории не существует!" });
+
   const videoBytes = await video[0].arrayBuffer();
   const videoBuffer = Buffer.from(videoBytes);
   const videoName = `${name.toLowerCase()}.${video[0].name.split(".").at(-1)}`;
-  const videoPath = resolve(__dirname, "../../../../public/videos", videoName)
+  const videoPath = resolve(__dirname, "../../../../public/videos", videoName);
+  const oldVideoPath = resolve(
+    __dirname,
+    "../../../../public/videos",
+    `${category.name.toLowerCase()}.mp4`
+  );
 
-  await rm(videoPath, { force: true })
+  await rm(oldVideoPath, { force: true });
 
   await writeFile(videoPath, videoBuffer);
 
   await prisma.category.update({
     where: {
-      id: Number(id)
+      id: Number(id),
     },
     data: {
       name,
     },
   });
 
-  return NextResponse.json({ message: "Категория создана!" });
+  return NextResponse.json({ message: "Категория отредактирована!" });
 }
 
 export async function DELETE(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (session?.user?.id !== "clpl6gb7e000008l45rq9dsxy") {
-    return NextResponse.json({ message: "Нет доступа!" });
-  }
-
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-
-  const categoryId = await req.json()
-
-  const category = await prisma.category.findFirst({
-    where: {
-      id: Number(categoryId)
+  try {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.id !== "clpl6gb7e000008l45rq9dsxy") {
+      return NextResponse.json({ message: "Нет доступа!" });
     }
-  })
 
-  if(!category) 
-    return NextResponse.json({ message: "Категории не существует!" })
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
 
-  const videoName = `${category.name.toLowerCase()}.mp4`;
-  const videoPath = resolve(__dirname, "../../../../public/videos", videoName);
+    const { categoryId } = await req.json();
 
-  await rm(videoPath, { force: true });
+    const category = await prisma.category.findFirst({
+      where: {
+        id: Number(categoryId),
+      },
+    });
 
-  await prisma.category.delete({
-    where: {
-      id: Number(categoryId),
-    },
-  });
+    if (!category)
+      return NextResponse.json({ message: "Категории не существует!" });
 
-  return NextResponse.json({ message: "Категория удалена!" });
+    const videoName = `${category.name.toLowerCase()}.mp4`;
+    const videoPath = resolve(
+      __dirname,
+      "../../../../public/videos",
+      videoName
+    );
+
+    await rm(videoPath, { force: true });
+
+    await prisma.category.delete({
+      where: {
+        id: Number(categoryId),
+      },
+    });
+
+    return NextResponse.json({ message: "Категория удалена!" });
+  } catch (error) {
+    const prismaError = error as any;
+    if (prismaError.code == "P2003")
+      return NextResponse.json(
+        {
+          message: "Существуют игры, принадлежащие к этой категории!",
+        },
+        { status: 500 }
+      );
+  }
 }
 
 export async function GET() {

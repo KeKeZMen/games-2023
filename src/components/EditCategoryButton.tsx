@@ -1,21 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
-import { CiSquarePlus } from "react-icons/ci";
-import { toast } from "react-hot-toast";
-import { Dialog, DialogTrigger, DialogContent } from "@/lib/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/lib/ui/dialog";
+import toast from "react-hot-toast";
+import type { Category } from "@prisma/client";
+import { FC, useState } from "react";
+import { CiEdit } from "react-icons/ci";
 import { CategoryForm } from "./CategoryForm";
 
-export const CreateCategoryButton = () => {
+type PropsType = {
+  category: Category;
+};
+
+export const EditCategoryButton: FC<PropsType> = ({ category }) => {
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const handleModal = () => setIsOpenedModal((prev) => !prev);
-  
+
   const onSubmitAction = async (
     data: any,
     video: FileList | null | undefined
   ) => {
     const formData = new FormData();
 
+    formData.append("id", String(category.id));
     formData.append("name", data.name);
 
     if (video) {
@@ -23,7 +29,7 @@ export const CreateCategoryButton = () => {
     }
 
     const res = await fetch("/api/category", {
-      method: "POST",
+      method: "PATCH",
       body: formData,
     });
 
@@ -32,19 +38,17 @@ export const CreateCategoryButton = () => {
   };
 
   return (
-    <Dialog onOpenChange={handleModal} open={isOpenedModal}>
-      <DialogTrigger className="text-[20px] gap-1 flex justify-between items-center">
-        <div className="flex items-center">
-          <CiSquarePlus />
-          <p>Создать Категорию</p>
-        </div>
+    <Dialog open={isOpenedModal} onOpenChange={handleModal}>
+      <DialogTrigger className="text-2xl">
+        <CiEdit />
       </DialogTrigger>
 
       <DialogContent>
         <CategoryForm
-          formTitle="Добавить категорию"
-          submitTitle="Добавить"
+          formTitle="Редактировать категорию"
+          submitTitle="Редактирвать"
           onSubmitAction={onSubmitAction}
+          category={category}
           onClose={handleModal}
         />
       </DialogContent>

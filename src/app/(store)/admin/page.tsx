@@ -11,6 +11,8 @@ import { DeleteProductButton } from "@/components/DeleteProductButton";
 import { CategoryRow } from "@/components/CategoryRow";
 import { EditProductButton } from "@/components/EditProductButton";
 import { PaginationNav } from "@/components/PaginationNav";
+import { DeleteCategoryButton } from "@/components/DeleteCategoryButton";
+import { EditCategoryButton } from "@/components/EditCategoryButton";
 
 type SearchParamsType = {
   page: string;
@@ -80,7 +82,7 @@ export default async function AdminPage({
   const categories = await prisma.category.findMany();
 
   return (
-    <div className="flex gap-3 w-full">
+    <div className="flex gap-3 md:p-0 flex-col-reverse md:flex-row md:container">
       <div className="flex flex-col gap-3 md:w-[50%]">
         <CreateProductButton />
         <div className="flex flex-col rounded-md border-2 border-white">
@@ -93,14 +95,19 @@ export default async function AdminPage({
             />
           ))}
         </div>
-        <FilterSelects alwaysMobile/>
+        <FilterSelects alwaysMobile />
         <PaginationNav productsCount={productsCount} />
       </div>
       <div className="flex flex-col gap-3 md:w-[50%]">
         <CreateCategoryButton />
         <div className="flex flex-col rounded-md border-2 border-white">
           {categories.map((category) => (
-            <CategoryRow category={category} key={category.id} />
+            <CategoryRow
+              category={category}
+              key={category.id}
+              deleteButton={<DeleteCategoryButton categoryId={category.id} />}
+              editButton={<EditCategoryButton category={category} />}
+            />
           ))}
         </div>
       </div>
