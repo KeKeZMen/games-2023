@@ -41,10 +41,13 @@ export const MenuButton: FC<PropsType> = ({ links }) => {
               initial={{ width: 0 }}
               animate={{ width: "200px" }}
               exit={{ width: 0 }}
-              className="w-[200px] flex flex-col bg-[hsl(var(--primary-foreground))] h-full overflow-hidden"
+              className="w-[200px] flex flex-col bg-[hsl(var(--primary-foreground))] h-full overflow-hidden whitespace-nowrap"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between flex-col">
+                <h2 className="md:hidden text-center bg-white text-[hsl(var(--primary-foreground))] p-4 text-2xl">
+                  Games 2023
+                </h2>
                 {links.map((link, i) => (
                   <Link
                     href={link.link}

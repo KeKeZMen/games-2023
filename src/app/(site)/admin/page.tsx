@@ -64,7 +64,9 @@ export default async function AdminPage({
     });
   }
 
-  const productsCount = await prisma.product.count();
+  const productsCount = await prisma.product.count({
+    where
+  });
 
   const products = await prisma.product.findMany({
     take: 10,
