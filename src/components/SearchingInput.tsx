@@ -82,9 +82,9 @@ export const SearchProductInput = () => {
       </AnimatePresence>
 
       {isOpenedDialog && searchedProducts && (
-        <div className="absolute bg-white rounded-md px-5 left-0 md:left-auto top-10 md:top-12 w-[200px] md:w-[300px] z-10 shadow-md max-h-[200px] overflow-y-auto">
+        <div className="absolute bg-[hsl(var(--primary-foreground))] rounded-md px-5 left-0 md:left-auto top-10 md:top-12 w-[200px] md:w-[300px] z-10 shadow-md max-h-[200px] overflow-y-auto">
           {searchedProducts.length < 1 ? (
-            <p className="p-3 text-black w-full text-center text-xl">
+            <p className="p-3 text-white w-full text-center text-xl">
               Нет совпадений
             </p>
           ) : (

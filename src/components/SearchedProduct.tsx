@@ -12,7 +12,7 @@ export const SearchedProducts: FC<PropsType> = ({
   onClick,
 }) => {
   return (
-    <div className="flex justify-between p-3 text-black border-b-2 border-black last:border-0">
+    <div className="flex justify-between p-3 text-white border-b-2 border-white last:border-0">
       <Link
         href={`/product/${searchedProduct.id}`}
         onClick={onClick}
