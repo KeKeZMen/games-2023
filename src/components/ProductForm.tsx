@@ -61,6 +61,7 @@ export const ProductForm: FC<PropsType> = ({
       categoryId: product?.categoryId ?? "",
       description: product?.description ?? "",
       cost: product?.price ?? 0,
+      discount: product?.discount ?? 0,
     },
   });
 
@@ -201,6 +202,7 @@ export const ProductForm: FC<PropsType> = ({
         </FormItem>
 
         <div className="flex justify-between w-full items-end">
+          <div className="flex flex-col gap-3 items-center">
           <FormField
             control={form.control}
             name="cost"
@@ -219,6 +221,26 @@ export const ProductForm: FC<PropsType> = ({
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="discount"
+            render={({ field }) => (
+              <FormItem className="w-[50%]">
+                <FormLabel>Скидка в %</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Цена"
+                    disabled={isLoading}
+                    required
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          </div>
 
           <Button type="submit" disabled={isLoading}>
             {submitTitle}

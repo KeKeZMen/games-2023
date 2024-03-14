@@ -20,7 +20,14 @@ export const ProductRow: FC<PropsType> = ({ product }) => {
         <h2 className="text-xs md:text-base">{product.name}</h2>
       </div>
 
-      <p className="mr-3">{product.price}$</p>
+      {product.discount !== 0 ? (
+        <p className="mr-3">
+          <span className="line-through mr-1">{product.price}$</span>
+          {Math.ceil(product.price - (product.price / 100) * product.discount)}$
+        </p>
+      ) : (
+        <p className="mr-3">{product.price}$</p>
+      )}
     </Link>
   );
 };

@@ -24,6 +24,7 @@ model Product {
   description String @db.Text
   price       Int
   categoryId  Int
+  discount    Int    @default(0)
 
   category  Category       @relation(fields: [categoryId], references: [id])
   OrderItem OrderItem[]

@@ -50,17 +50,18 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
               transform:
                 currentPage == 0
                   ? "translateX(0)"
-                  : currentPage + 2 >= Math.floor(productsCount / 10) - 1
+                  : currentPage + 2 >= Math.ceil(productsCount / 10) - 1
                   ? `translateX(-${
-                      (Math.floor(productsCount / 10) - 5) * 40
+                      (Math.ceil(productsCount / 10) - 5) * 40
                     }px)`
                   : `translateX(-${(currentPage - 1) * 40}px)`,
             }}
           >
-            {Array.from({ length: Math.floor(productsCount / 10) }).map(
+            {Array.from({ length: Math.ceil(productsCount / 10) }).map(
               (_, i, array) =>
                 i !== 0 &&
-                i !== array.length - 1 && (
+                i !== array.length - 1 &&
+                 (
                   <PaginationLink
                     key={i}
                     isActive={i == currentPage}
@@ -74,8 +75,8 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
         </div>
 
         <PaginationLink
-          isActive={Math.floor(productsCount / 10) - 1 == currentPage}
-          onClick={() => setCurrentPage(Math.floor(productsCount / 10) - 1)}
+          isActive={Math.ceil(productsCount / 10) - 1 == currentPage}
+          onClick={() => setCurrentPage(Math.ceil(productsCount / 10) - 1)}
         >
           {Math.ceil(productsCount / 10)}
         </PaginationLink>
@@ -83,9 +84,9 @@ export const PaginationNav: FC<PropsType> = ({ productsCount }) => {
         <PaginationNext
           onClick={() =>
             setCurrentPage(
-              currentPage < Math.floor(productsCount / 10)
-                ? currentPage + 1
-                : Math.floor(productsCount / 10)
+              currentPage + 1 >= Math.ceil(productsCount / 10) - 1
+                ? Math.ceil(productsCount / 10) - 1
+                : currentPage + 1
             )
           }
         />

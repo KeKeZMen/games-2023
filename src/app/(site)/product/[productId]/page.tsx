@@ -22,6 +22,7 @@ export default async function ProductPage({
       images: true,
       name: true,
       price: true,
+      discount: true
     },
   });
 
@@ -90,7 +91,17 @@ export default async function ProductPage({
           </p>
 
           <div className="flex justify-between rounded-md bg-black">
-            <p className="border-r-2 p-1">{product.price}$</p>
+            {product.discount !== 0 ? (
+              <p className="border-r-2 p-1">
+                <span className="line-through mr-1">{product.price}$</span>
+                {Math.ceil(
+                  product.price - (product.price / 100) * product.discount
+                )}
+                $
+              </p>
+            ) : (
+              <p className="border-r-2 p-1">{product.price}$</p>
+            )}
 
             {isOrdered ? (
               <div className="bg-red-500 flex items-center justify-center px-2 rounded-r-md">

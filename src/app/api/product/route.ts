@@ -18,6 +18,7 @@ export async function POST(req: Request) {
 
   const body = await req.formData();
 
+  const discount = body.get("discount") as string;
   const name = body.get("name") as string;
   const replacedName = name.replaceAll(" ", "-").toLowerCase();
   const desk = body.get("description") as string;
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
       description: desk,
       name,
       categoryId: parseInt(categoryId),
+      discount: Number(discount)
     },
   });
 
@@ -119,6 +121,12 @@ export async function DELETE(req: Request) {
       productId: Number(productId),
     },
   });
+  
+  await prisma.orderItem.deleteMany({
+    where: {
+      productId: Number(productId),
+    }
+  })
 
   await prisma.product.delete({
     where: {
@@ -143,6 +151,7 @@ export async function PATCH(req: Request) {
 
   const id = body.get("id") as string;
   const name = body.get("name") as string;
+  const discount = body.get("discount") as string;
   const replacedName = name.replaceAll(" ", "-").toLowerCase();
   const desk = body.get("description") as string;
   const categoryId = body.get("categoryId") as string;
@@ -189,6 +198,7 @@ export async function PATCH(req: Request) {
       description: desk,
       name,
       categoryId: parseInt(categoryId),
+      discount: Number(discount)
     },
   });
 
