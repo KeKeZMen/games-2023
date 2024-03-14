@@ -10,6 +10,8 @@ type SearchParamsType = {
   startCost: string;
   finalCost: string;
   categoryId: string;
+  key: "name" | "price";
+  orderBy: "asc" | "desc";
 };
 
 type FilterType = {
@@ -32,6 +34,20 @@ export default async function CatalogPage({
   if (Object.values(searchParams).length < 4) {
     redirect("/catalog?page=0&categoryId=all&startCost=0&finalCost=1000");
   }
+
+  let orderBy = {};
+
+  if (searchParams.key == "name") {
+    orderBy = {
+      name: searchParams.orderBy,
+    };
+  } else if (searchParams.key == "price") {
+    orderBy = {
+      price: searchParams.orderBy,
+    };
+  }
+
+  console.log(orderBy);
 
   const where: FilterType = {
     AND: [
@@ -73,6 +89,7 @@ export default async function CatalogPage({
       discount: true
     },
     where,
+    orderBy
   });
 
   return (

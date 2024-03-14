@@ -78,6 +78,7 @@ export default async function AdminPage({
       images: true,
       name: true,
       price: true,
+      discount: true
     },
     where,
   });

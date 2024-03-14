@@ -14,6 +14,7 @@ export default async function MainPage() {
       images: true,
       name: true,
       price: true,
+      discount: true,
     },
   });
 
@@ -27,6 +28,7 @@ export default async function MainPage() {
       images: true,
       name: true,
       price: true,
+      discount: true,
     },
   });
 
@@ -43,6 +45,7 @@ export default async function MainPage() {
           images: true,
           name: true,
           price: true,
+          discount: true,
         },
       },
     },

@@ -28,6 +28,40 @@ type SelectsPropsType = {
   onSelect?: () => void;
 };
 
+type SortActionType = {
+  value: string;
+  key: "name" | "price";
+  orderBy: "asc" | "desc";
+  label: string;
+};
+
+const sortOptions: Array<SortActionType> = [
+  {
+    value: "0",
+    key: "name",
+    orderBy: "asc",
+    label: "Названия по возрастанию",
+  },
+  {
+    value: "1",
+    key: "name",
+    orderBy: "desc",
+    label: "Названия по убыванию",
+  },
+  {
+    value: "2",
+    key: "price",
+    orderBy: "asc",
+    label: "Цена по возрастанию",
+  },
+  {
+    value: "3",
+    key: "price",
+    orderBy: "desc",
+    label: "Цена по убыванию",
+  },
+];
+
 const Selects: FC<SelectsPropsType> = ({ onSelect }) => {
   const router = useRouter();
   const pathName = usePathname();
@@ -41,6 +75,7 @@ const Selects: FC<SelectsPropsType> = ({ onSelect }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [startCost, setStartCost] = useState("0");
   const [finalCost, setFinalCost] = useState("1000");
+  const [selectedOrderBy, setSelectedOrderBy] = useState("0");
 
   const handleQuery = () => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
@@ -53,6 +88,8 @@ const Selects: FC<SelectsPropsType> = ({ onSelect }) => {
 
     current.set("startCost", startCost);
     current.set("finalCost", finalCost);
+    current.set("key", sortOptions[parseInt(selectedOrderBy)].key);
+    current.set("orderBy", sortOptions[parseInt(selectedOrderBy)].orderBy);
 
     let search = current.toString();
     const query = search ? `?${search}` : "";
@@ -94,6 +131,23 @@ const Selects: FC<SelectsPropsType> = ({ onSelect }) => {
           </SelectContent>
         </Select>
       )}
+
+      <Select onValueChange={(val) => setSelectedOrderBy(val)} defaultValue="0">
+        <SelectTrigger>
+          <SelectValue placeholder="Категория" />
+        </SelectTrigger>
+        <SelectContent>
+          {sortOptions.map((option, i) => (
+            <SelectItem
+              value={option.value}
+              className=" text-leftcursor-pointer"
+              key={i}
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <Input
         onChange={(e) => setStartCost(e.target.value)}
